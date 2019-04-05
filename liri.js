@@ -15,36 +15,27 @@ function searchSpotify(term) {
             console.log("-----------------");
             return console.log('Error occurred: ' + err);
         }
-        console.log("LOOK HERE: ", term);
-        console.log(data.tracks.items[0]);
         console.log("-----------------");
-        //artist
-        console.log(data.tracks.items[0].album.artists[0].name);
-        //song's name
-        console.log(data.tracks.items[0].name);
-        //preview link
-        console.log(data.tracks.items[0].preview_url);
-        //album
-        console.log(data.tracks.items[0].album.name);
-
+        console.log("term: " ,term);
+        console.log("*Name of the artists: ",data.tracks.items[0].album.artists[0].name);
+        console.log("*Song's name: ",data.tracks.items[0].name);
+        console.log("*Preview link for the song: ",data.tracks.items[0].preview_url);
+        console.log("*The album the song is from: ",data.tracks.items[0].album.name);
+        console.log("-----------------");
     });
 };
 
 //---------------------------------------------------------------------OMDB
 function searchOMDB(term){
     var axios = require("axios");
-    console.log(term);
-    console.log(omdb);
     var url="http://www.omdbapi.com/?t=" + term + "&apikey="+ omdb;
-    console.log(url);
     axios.get(url).then(
-        function(response) {
-            // Then we print out the imdbRating
+        function(response) {   
             console.log("-----------------");
             console.log('*Title of the movie:', response.data.Title);
             console.log('*Year the movie came out:', response.data.Year);
             console.log('*IMDB Rating of the movie:', response.data.imdbRating);
-            console.log('*Rotten Tomatoes Rating of the movie:', response.data.Ratings[1]);
+            console.log('*Rotten Tomatoes Rating of the movie:', response.data.Ratings[1].Value);
             console.log('*Country where the movie was produced:', response.data.Country);
             console.log('*Language of the movie:', response.data.Language);
             console.log('*Plot of the movie:', response.data.Plot);
@@ -58,25 +49,10 @@ function searchBandsInTown(term){
     var axios = require("axios");
     axios.get("https://rest.bandsintown.com/artists/"+term+"/events?app_id=codingbootcamp")
     .then(function(response) {
-        //name of venue
-        
-        for(var i=0; i<response.data.length; i++){
-            console.log(response.data[i].venue.name);
-        };
-        
-        // for(var i=0; i<response.data.length){
-
-        // }
-        console.log(response.data[0].venue.name);
-        //name of locatoin
-
-        //date of the event 
-
-        // console.log("LOOK HERE: ", term);
-        // console.log("Venue:",response.venue.name);
-        // console.log("Venue location: ", response.venue.Country);
-        // console.log("Date of the event: ", moment(response.datetime).format('MM-DD-YYYY'));
-        
+        console.log("-----------------");
+        console.log("*Name of the venue: ",response.data[0].venue.name);
+        console.log("*Venue location: ",response.data[0].venue.city +", "+response.data[0].venue.country);
+        console.log("*Date of the event: ",response.data[0].datetime);
         console.log("-----------------");
     });
 };
@@ -85,11 +61,32 @@ var fs = require("fs");
 function doWhatItSays(){
     fs.readFile("random.txt", "utf8", function(error, data) {
         console.log(data);
-       
+        var randomtxt = data.split(',');
+        catagory = randomtxt[0];
+        searchTerm= randomtxt[1];
+
+        switch (catagory) {
+            case "concert-this":
+                searchBandsInTown(searchTerm);
+                break;
+            case "spotify-this-song":
+                searchSpotify(searchTerm);
+                break;
+            case "movie-this":
+                searchOMDB(searchTerm);
+                break;
+            case "do-what-it-says":
+                doWhatItSays();
+                break;
+            default:
+                console.log("Your input was not recognized. Please try again.")
+                break;
+        }
     });
 };
 
 //---------------------------------------------------------------------MAIN FUNCTION
+
 var catagory = process.argv[2];
 var searchTerm = process.argv[3];
    
@@ -98,6 +95,10 @@ switch (catagory) {
         searchBandsInTown(searchTerm);
         break;
     case "spotify-this-song":
+        if (searchTerm==null){
+            searchTerm="The Sign";
+            console.log("SEACH TERM: ", searchTerm);
+        };
         searchSpotify(searchTerm);
         break;
     case "movie-this":
