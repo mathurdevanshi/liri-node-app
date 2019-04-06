@@ -15,16 +15,18 @@ function searchSpotify(term) {
             console.log("-----------------");
             return console.log('Error occurred: ' + err);
         }
-        console.log("-----------------");
-        console.log("term: " ,term);
-        console.log("*Name of the artists: ",data.tracks.items[0].album.artists[0].name);
-        console.log("*Song's name: ",data.tracks.items[0].name);
-        console.log("*Preview link for the song: ",data.tracks.items[0].preview_url);
-        console.log("*The album the song is from: ",data.tracks.items[0].album.name);
-        console.log("-----------------");
+        console.log("Phrase Searched: " ,term);
+        for (let index = 0; index < data.tracks.items.length; index++) {
+            console.log("---------------------------------- RESULT #"+ (index+1) +"----------------------------------");
+            console.log("*Name of the artists: ",data.tracks.items[index].album.artists[0].name);
+            console.log("*Song's name: ",data.tracks.items[index].name);
+            console.log("*Preview link for the song: ",data.tracks.items[index].preview_url);
+            console.log("*The album the song is from: ",data.tracks.items[index].album.name);
+            console.log("----------------------------------END OF RESULT----------------------------------");
+        }
+        
     });
 };
-
 //---------------------------------------------------------------------OMDB
 function searchOMDB(term){
     var axios = require("axios");
@@ -49,11 +51,13 @@ function searchBandsInTown(term){
     var axios = require("axios");
     axios.get("https://rest.bandsintown.com/artists/"+term+"/events?app_id=codingbootcamp")
     .then(function(response) {
-        console.log("-----------------");
-        console.log("*Name of the venue: ",response.data[0].venue.name);
-        console.log("*Venue location: ",response.data[0].venue.city +", "+response.data[0].venue.country);
-        console.log("*Date of the event: ",response.data[0].datetime);
-        console.log("-----------------");
+        for (let index = 0; index < response.data.length; index++) {
+            console.log("---------------------------------- RESULT #"+ (index+1) +"----------------------------------");
+            console.log("*Name of the venue: ",response.data[index].venue.name);
+            console.log("*Venue location: ",response.data[index].venue.city +", "+response.data[index].venue.country);
+            console.log("*Date of the event: ",response.data[index].datetime);
+            console.log("----------------------------------END OF RESULT----------------------------------");
+        }
     });
 };
 //---------------------------------------------------------------------DO WHAT IT SAYS
@@ -92,16 +96,24 @@ var searchTerm = process.argv[3];
    
 switch (catagory) {
     case "concert-this":
+        if (searchTerm==null){
+            searchTerm="Lumineers";
+            console.log("No input given. Default: ", searchTerm);
+        };
         searchBandsInTown(searchTerm);
         break;
     case "spotify-this-song":
         if (searchTerm==null){
             searchTerm="The Sign";
-            console.log("SEACH TERM: ", searchTerm);
+            console.log("No input given. Default: ", searchTerm);
         };
         searchSpotify(searchTerm);
         break;
     case "movie-this":
+        if (searchTerm==null){
+            searchTerm="Mr. Nobody";
+            console.log("No input given. Default: ", searchTerm);
+        };
         searchOMDB(searchTerm);
         break;
     case "do-what-it-says":
