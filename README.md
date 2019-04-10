@@ -21,6 +21,6 @@ Some nice features:
     If no seach value is entered, there are default values. 
 
 Video of concert-this:https://drive.google.com/open?id=1vv0SaNIc-qzb_m37rYUsC3BLamLmJRPU
-Video of movie-https://drive.google.com/open?id=1svTaTR-FYc7mYZs97TPybdqCwOpHyTJ_
+Video of movie-https://drive.google.com/file/d/1svTaTR-FYc7mYZs97TPybdqCwOpHyTJ_/view
 Video of random-https://drive.google.com/open?id=1bPs7jQU6_qIbUpTg_cN8OLoeLDbQqpcm
-Video of song-https://drive.google.com/open?id=1bPs7jQU6_qIbUpTg_cN8OLoeLDbQqpcm
+Video of song-https://drive.google.com/file/d/1P7MnW49d5dmB28UCjCnUIDamieL1TlWs/view
